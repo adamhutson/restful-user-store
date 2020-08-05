@@ -16,7 +16,7 @@ func init() {
 	port := 5432
 	user := "adam"
 	password := "password"
-	database := "mux-postgres-api"
+	database := "restful-user-store"
 
 	dbInfo := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",

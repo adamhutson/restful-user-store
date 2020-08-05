@@ -34,7 +34,11 @@ Example User Object
 
 # Setup
 
-Need golang installed and GOPATH env vars set. 
+Need golang installed and GOPATH env vars set. Will also need to `go get` a couple libraries.
+```
+go get github.com/gorilla/mux
+go get github.com/lib/pq
+```
 
 Need postgres installed locally, and running.  I'm on macOS, and prefer to use Homebrew.
 ```
@@ -57,6 +61,47 @@ GRANT ALL PRIVILEGES ON DATABASE "restful-user-store" to adam;
 
 ALTER USER adam WITH SUPERUSER;
 ```
+
+# Persistance
+
+The service will store the user objects in a SQL store, specifically Postgres.
+
+We will need a couple tables to store the User & Group Objects, and the relation between them.  Don't worry about creating these, as the program will create them if they don't exist.
+```sql
+CREATE TABLE IF NOT EXISTS users (
+    FirstName TEXT, 
+    LastName TEXT, 
+    UserID TEXT PRIMARY KEY NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS groups (
+    GroupName TEXT PRIMARY KEY NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS userGroups (
+    UserID TEXT NOT NULL, 
+    GroupName TEXT NOT NULL, 
+    PRIMARY KEY(UserID, GroupName)
+);
+```
+
+# Tests
+
+TODO: We will also provide some tests to verify that it's all working as designed.  Yea, yea, ... I know ... it's not TDD. 
+
+# Run the Code
+
+To run a golang code, you either `go run` it: 
+```
+go run .
+```
+or `go build` it:
+```
+go build
+./restful-user-store
+```
+Either option leaves you with a running process that you can now interact with via curl.
+
 
 # Example Requests
 
@@ -90,29 +135,4 @@ curl -i -XDELETE localhost:8080/users/shutson
 curl -i -XDELETE localhost:8080/groups/super_user
 ```
 
-# Persistance
-
-The service will store the user objects in a SQL store, specifically Postgres.
-
-We will need a couple tables to store the User & Group Objects, and the relation between them.  Don't worry about creating these, as the program will create them if they don't exist.
-```sql
-CREATE TABLE IF NOT EXISTS users (
-    FirstName TEXT, 
-    LastName TEXT, 
-    UserID TEXT PRIMARY KEY NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS groups (
-    GroupName TEXT PRIMARY KEY NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS userGroups (
-    UserID TEXT NOT NULL, 
-    GroupName TEXT NOT NULL, 
-    PRIMARY KEY(UserID, GroupName)
-);
-```
-
-# Tests
-
-TODO: We will also provide some tests to verify that it's all working as designed.  Yea, yea, ... I know ... it's not TDD.  
+ 

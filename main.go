@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/adamhutson/mux-postgres-api/models"
+	"github.com/adamhutson/restful-user-store/models"
 	"github.com/gorilla/mux"
 )
 
