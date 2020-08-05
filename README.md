@@ -53,7 +53,7 @@ While connected to the postgres command prompt, run the following sql commands:
 ```sql
 CREATE USER adam WITH PASSWORD 'password';
 
-GRANT ALL PRIVILEGES ON DATABASE "mux-postgres-api" to adam;
+GRANT ALL PRIVILEGES ON DATABASE "restful-user-store" to adam;
 
 ALTER USER adam WITH SUPERUSER;
 ```
